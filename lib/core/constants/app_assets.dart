@@ -113,6 +113,9 @@ class AppAssets {
   /// Alternate Lottie JSON for the completion animation.
   static const String allSetAnimation = 'assets/animations/all_set.json';
 
+  /// Lottie JSON for the splash screen animation.
+  static const String splashAnimation = 'assets/animations/splash.json';
+
   // ---------------------------------------------------------------------------
   // Icons — PNG
   // ---------------------------------------------------------------------------

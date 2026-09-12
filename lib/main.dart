@@ -75,8 +75,9 @@ class MyApp extends StatelessWidget {
                     GlobalCupertinoLocalizations.delegate,
                   ],
                   supportedLocales: AppLocalizations.supportedLocales,
-                  initialRoute: AppRoutes.driverLoginScreen,
+                  initialRoute: AppRoutes.initialRoute,
                   routes: AppRoutes.routes,
+                  onGenerateRoute: AppRoutes.onGenerateRoute,
                 ),
               );
             },

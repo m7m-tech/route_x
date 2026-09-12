@@ -5,6 +5,11 @@ import 'package:route_x/core/network/auth_status_controller.dart';
 import 'package:route_x/core/network/dio_client.dart';
 import 'package:route_x/core/storage/secure_storage_service.dart';
 import 'package:route_x/core/services/media/image_picker_service.dart';
+import 'package:route_x/features/onboarding/data/repositories/onboarding_repository_impl.dart';
+import 'package:route_x/features/onboarding/domain/repositories/onboarding_repository.dart';
+import 'package:route_x/features/onboarding/domain/usecases/complete_onboarding_usecase.dart';
+import 'package:route_x/features/onboarding/domain/usecases/get_onboarding_items_usecase.dart';
+import 'package:route_x/features/onboarding/presentation/bloc/onboarding_cubit.dart';
 // import 'package:route_x/features/auth/data/datasources/auth_remote_data_source.dart';
 // import 'package:route_x/features/auth/data/repositories/auth_repository_impl.dart';
 // import 'package:route_x/features/auth/domain/repositories/auth_repository.dart';
@@ -160,4 +165,20 @@ void setupDependencyInjection() {
   // getIt.registerFactory<CreateOrderCubit>(
   //   () => CreateOrderCubit(createOrderUseCase: getIt<CreateOrderUseCase>()),
   // );
+  // ONBOARDING FEATURE
+  getIt.registerLazySingleton<OnboardingRepository>(
+    () => OnboardingRepositoryImpl(),
+  );
+  getIt.registerLazySingleton(
+    () => GetOnboardingItemsUseCase(repository: getIt()),
+  );
+  getIt.registerLazySingleton(
+    () => CompleteOnboardingUseCase(repository: getIt()),
+  );
+  getIt.registerFactory(
+    () => OnboardingCubit(
+      getOnboardingItemsUseCase: getIt(),
+      completeOnboardingUseCase: getIt(),
+    ),
+  );
 }

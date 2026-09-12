@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:route_x/core/theme/app_colors.dart';
 import 'package:route_x/core/theme/app_text_styles.dart';
-import 'package:route_x/features/auth/presentation/screens/driver_login_screen.dart';
-// import 'package:route_x/features/auth/presentation/screens/forget_password_screen.dart';
-// import 'package:route_x/features/auth/presentation/screens/signup_step1_screen.dart';
-// import 'package:route_x/features/auth/presentation/screens/verify_code_screen.dart';
+import 'package:route_x/features/splash/presentation/screens/splash_screen.dart';
+import 'package:route_x/features/onboarding/presentation/screens/onboarding_screen.dart';
 
 /// Central routing table for the entire RouteX application.
 ///
@@ -70,22 +68,80 @@ class AppRoutes {
   /// Route name → screen builder.
   ///
   /// Screens that are not implemented yet resolve to a lightweight
-  /// placeholder, so navigation can never land on a blank page.
+  /// placeholder, so navigation can never crash on an undefined route.
   static final Map<String, WidgetBuilder> routes = {
-    // driverLoginScreen: (_) => const DriverLoginScreen(),
-    
-    // otpVerificationScreen: (_) => const VerifyCodeScreen(),
-    
-    // forgetPasswordScreen: (_) => const ForgetPasswordScreen(),
-    // forgetPasswordOtpScreen: (_) => const VerifyCodeScreen(),
-    
+    splashScreen: (_) => const SplashScreen(),
+    onboardingScreen: (_) => const OnboardingScreen(),
+    driverLoginScreen: (_) => const PlaceholderScreen(routeName: driverLoginScreen),
+    signupStep1Screen: (_) => const PlaceholderScreen(routeName: signupStep1Screen),
+    signupStep2Screen: (_) => const PlaceholderScreen(routeName: signupStep2Screen),
+    signupStep3Screen: (_) => const PlaceholderScreen(routeName: signupStep3Screen),
+    signupSummaryScreen: (_) => const PlaceholderScreen(routeName: signupSummaryScreen),
+    otpVerificationScreen: (_) => const PlaceholderScreen(routeName: otpVerificationScreen),
+    youreAllSetScreen: (_) => const PlaceholderScreen(routeName: youreAllSetScreen),
+    forgetPasswordScreen: (_) => const PlaceholderScreen(routeName: forgetPasswordScreen),
+    forgetPasswordOtpScreen: (_) => const PlaceholderScreen(routeName: forgetPasswordOtpScreen),
+    setNewPasswordScreen: (_) => const PlaceholderScreen(routeName: setNewPasswordScreen),
+    createOrderScreen: (_) => const PlaceholderScreen(routeName: createOrderScreen),
   };
 
   /// Wire this into `MaterialApp.onGenerateRoute`.
   ///
   /// Resolves every registered [AppRoutes] constant to its screen; any
-  /// unrecognised name falls back to a placeholder instead of a blank page.
-  
+  /// unrecognised name falls back to a placeholder instead of throwing an error.
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    final builder = routes[settings.name];
+    if (builder != null) {
+      return MaterialPageRoute(
+        builder: builder,
+        settings: settings,
+      );
+    }
+    return MaterialPageRoute(
+      builder: (_) => PlaceholderScreen(routeName: settings.name ?? 'Unknown Route'),
+      settings: settings,
+    );
+  }
 }
 
 /// Fallback shown for routes whose screen is not implemented yet.
+class PlaceholderScreen extends StatelessWidget {
+  final String routeName;
+  const PlaceholderScreen({super.key, required this.routeName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        title: const Text('RouteX'),
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: AppColors.primaryBlack),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.construction_rounded, size: 64, color: AppColors.mainGreen),
+              const SizedBox(height: 16),
+              Text(
+                'Screen Under Development',
+                style: AppTextStyles.s20Bold.copyWith(color: AppColors.primaryBlack),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                routeName,
+                style: AppTextStyles.s14Regular.copyWith(color: AppColors.gray500),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

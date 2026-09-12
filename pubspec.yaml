@@ -83,10 +83,6 @@ flutter:
     # --- Images ---
     - assets/images/svg/
     - assets/images/png/
-    - assets/images/jpg/
-    # --- Icons ---
-    - assets/icons/svg/
-    - assets/icons/png/
 
   fonts:
     - family: Satoshi
